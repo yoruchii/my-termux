@@ -1,0 +1,61 @@
+## ===============================
+## NANO RC - TERMUX MOBILE EDITION
+## Elegan • Minimal • Efisien
+## ===============================
+
+## Tampilan
+set linenumbers          # nomor baris
+set constantshow         # posisi kursor selalu tampil
+set softwrap             # wrap teks (penting di layar kecil)
+set tabsize 2            # tab kecil biar rapih
+set tabstospaces         # tab -> spasi
+set indicator            # indikator scroll
+set minibar              # status bar ringkas
+set nohelp               # sembunyikan help (hemat layar)
+set nonewlines
+set positionlog
+
+## Editing
+set autoindent
+# set breaklonglines
+# set trimblanks           # hapus spasi kosong saat save
+# set atblanks             # backspace lebih natural
+set mouse                # support tap (Termux)
+
+## Search
+set casesensitive
+set regexp
+
+## Backup & Safety
+set backup
+set backupdir ~/.cache/nano
+
+## Performance
+# set quickblank
+# set locking
+
+## Keybind (mobile-friendly)
+bind ^S writeout main     # Ctrl+S = Save
+bind ^Q exit main         # Ctrl+Q = Exit
+bind ^F whereis main      # Ctrl+F = Find
+bind ^R replace main      # Ctrl+R = Replace
+bind ^Z undo main         # Ctrl+Z = Undo
+bind ^Y redo main         # Ctrl+Y = Redo
+bind ^/ findprevious main # Ctrl+/ = Find prev
+bind ^v mark main         # Ctrl+v = mark
+bind ^K copy main
+bind ^P paste main
+bind ^D cut main
+
+## Syntax Highlighting
+include /data/data/com.termux/files/usr/share/nano/*.nanorc
+
+
+## Color Theme (Dark Elegant)
+set titlecolor brightwhite,black
+set statuscolor brightwhite,black
+set errorcolor brightred,black
+set selectedcolor black,cyan
+set numbercolor brightwhite
+set keycolor brightcyan,black
+set functioncolor brightyellow,black
