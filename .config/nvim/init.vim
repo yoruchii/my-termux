@@ -3,15 +3,12 @@
 " =============================================================================
 set nocompatible
 set encoding=utf-8
-set number
-set wrap
-set smartindent
+set number                                               set wrap                                                 set smartindent
 set shiftwidth=2
 set tabstop=2
 set softtabstop=2
 set expandtab
-set updatetime=300
-set signcolumn=yes            " Selalu tampilkan kolom tanda agar tidak geser
+set updatetime=300                                       set signcolumn=yes            " Selalu tampilkan kolom tanda agar tidak geser
 set laststatus=2
 set showtabline=2             " Selalu tampilkan tabline
 set noshowmode                " Mode tidak perlu tampil karena sudah ada di lightline
@@ -36,6 +33,7 @@ nnoremap <S-Q> :q!<CR>
 " Navigasi Tab
 nnoremap <S-P> :tabprevious<CR>
 nnoremap <S-N> :tabnext<CR>
+nnoremap <S-G> :tabnew<CR>
 nnoremap <S-f> :Telescope find_files<CR>
 
 " =============================================================================
@@ -46,6 +44,7 @@ call plug#begin()
 " UI & Icons
 Plug 'itchyny/lightline.vim'
 Plug 'nvim-tree/nvim-web-devicons'
+Plug 'morhetz/gruvbox'
 
 " Coding Helpers
 Plug 'mattn/emmet-vim'
@@ -55,25 +54,28 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'Yggdroot/indentLine'
 Plug 'norcalli/nvim-colorizer.lua'
+Plug 'windwp/nvim-autopairs'
+Plug 'akinsho/toggleterm.nvim', { 'tag': '*' }
 
 call plug#end()
 
 " ============================================================================
 " COLORSCHEME & HIGHLIGHT CUSTOMIZATION
 " =============================================================================
-" colorscheme 
+colorscheme gruvbox
 
 " Custom warna
-highlight LineNr guifg=#a6e22e
-highlight CursorLineNr guifg=#a6e22e gui=bold
-highlight Visual guibg=#3e3e3e
-highlight Normal guibg=NONE    " Jika ingin background transparan mengikuti terminal
+highlight LineNr guifg=#8ec07c
+highlight CursorLineNr guifg=#ebdbb2 gui=bold
+highlight Visual guibg=#665c54
+" highlight Normal guibg=NONE    " Jika ingin background transparan mengikuti terminal
 
 " =============================================================================
 " LIGHTLINE CONFIG (Statusline & Tabline)
 " =============================================================================
 " Catatan: Pastikan pakai Nerd Font di terminal agar icon/panah muncul
 let g:lightline = {
+      \ 'colorscheme': 'gruvbox',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'readonly', 'filename', 'modified' ] ],
@@ -89,7 +91,7 @@ let g:lightline = {
       \ 'tab_component_function': {
       \   'filename': 'LightlineTabname',
       \ },
-      \ 'separator': { 'left': '', 'right': '' },
+      \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
 
@@ -97,7 +99,7 @@ let g:lightline = {
 " TELESCOPE, TREESITTER CONFIG DLL
 " =============================================================================
 lua << EOF
-require('nvim-treesitter.configs').setup {
+require('nvim-treesitter').setup {
   highlight = { enable = true },
 }
 
@@ -141,12 +143,28 @@ function! LightlineTabname(n) abort
   let winnr = tabpagewinnr(a:n)
   let _filename = expand('#' . buflist[winnr - 1] . ':t')
   let _extension = expand('#' . buflist[winnr - 1] . ':e')
-  
+
   " Ambil ikon menggunakan Lua dari nvim-web-devicons
   let icon = luaeval("require('nvim-web-devicons').get_icon('" . _filename . "', '" . _extension . "', { default = true })")
-  
+
   " Jika file tidak ada namanya, tampilkan [No Name]
   let name = _filename !=# '' ? _filename : '[No Name]'
-  
+
   return icon . ' ' . name
 endfunction
+
+" Autopairs
+lua << EOF
+require("nvim-autopairs").setup {}
+EOF
+
+" Toggle Terminal
+lua << EOF
+require("toggleterm").setup{
+  open_mapping = [[<S-T>]],   -- shortcut buka tutup (SHIFT + T)
+  direction = "float",        -- floating terminal
+  float_opts = {
+    border = "curved"         -- border style
+  }
+}
+EOF
